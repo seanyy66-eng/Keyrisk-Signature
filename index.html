@@ -213,29 +213,9 @@ function copySignature() {
   const el = document.getElementById('sig-preview');
   html2canvas(el, { backgroundColor: null, scale: 2, useCORS: true }).then(canvas => {
     canvas.toBlob(blob => {
-      const imgURL = URL.createObjectURL(blob);
-      const em = getEmailPrefix() || 'email@keyrisk.co.za';
-      const mboxes = getActiveMailboxes();
-      const secTitle = getSectionTitle();
-      let discl = 'Disclaimer: Keyrisk Group Benefits (Pty) Ltd accepts no liability for unauthorised use of its email facility or the contents of this communication.';
-      if (state.includeFAIS && state.faisRole)
-        discl += ' As ' + state.faisRole + ', I may provide factual product information only and am not authorised to give advice in terms of FAIS.';
-      const mboxLinks = mboxes.map(m => '<b>' + m.label + ':</b> <a href="mailto:' + m.email + '">' + m.email + '</a>').join(' | ');
-      const win = window.open('', '_blank');
-      win.document.write(`<html><head><meta charset="utf-8"><title>Keyrisk Signature</title></head>
-      <body style="margin:20px;background:#ffffff;font-family:Trebuchet MS,Arial,sans-serif;">
-        <p style="font-size:14px;color:#333;margin-bottom:16px;"><b>Press Ctrl+A then Ctrl+C to copy, then paste into Outlook.</b></p>
-        <hr style="margin-bottom:20px;border:1px solid #ddd;">
-        <img src="${imgURL}" width="580" style="display:block;width:580px;" alt="Keyrisk Signature">
-        <table cellpadding="0" cellspacing="0" border="0" width="580" style="border-collapse:collapse;">
-          <tr><td style="padding:6px 0 2px 0;font-size:11px;color:#21243D;font-family:Trebuchet MS,Arial,sans-serif;">
-            <a href="mailto:${em}" style="color:#21243D;">${em}</a> | <a href="https://www.keyrisk.co.za" style="color:#21243D;">www.keyrisk.co.za</a> | Tel: +27 86 100 0079
-          </td></tr>
-          ${mboxLinks ? `<tr><td style="padding:2px 0;font-size:10px;color:#21243D;font-family:Trebuchet MS,Arial,sans-serif;">${mboxLinks}</td></tr>` : ''}
-          <tr><td style="padding:4px 0 0 0;font-size:8px;color:#999;font-family:Trebuchet MS,Arial,sans-serif;">${discl}</td></tr>
-        </table>
-      </body></html>`);
-      win.document.close();
+      navigator.clipboard.write([
+        new ClipboardItem({ 'image/png': blob })
+      ]).then(() => showToast('Signature image copied — paste into Outlook with Ctrl+V'));
     }, 'image/png');
   });
 }
@@ -315,7 +295,7 @@ function render() {
           <h2>Live Preview</h2>
           <div class="btn-group">
             <button class="btn btn-secondary" onclick="copyHTML()">&#60;/&#62; Copy HTML</button>
-            <button class="btn btn-primary" onclick="copySignature()">&#128203; Copy for Outlook</button>
+            <button class="btn btn-primary" onclick="copySignature()">&#128203; Copy Signature</button>
           </div>
         </div>
         <div class="preview-body"><div id="sig-preview">${generateSignatureHTML()}</div></div>
@@ -327,7 +307,7 @@ function render() {
         <li>Fill in the employee details — the preview updates live.</li>
         <li>Use a <strong style="color:var(--gold)">Quick Preset</strong> to auto-select a common link set, or manually tick individual links below.</li>
         <li>Choose the section heading: <code>Dedicated Mailboxes</code> or <code>Service Links</code>.</li>
-        <li>Click <strong style="color:var(--gold)">"Copy for Outlook"</strong> — a new tab opens with the signature as an image + clickable links. Press <strong style="color:var(--gold)">Ctrl+A</strong> then <strong style="color:var(--gold)">Ctrl+C</strong>, then paste into Outlook signature settings.</li>
+        <li>Click <strong style="color:var(--gold)">"Copy Signature"</strong> — copies the signature as an image to your clipboard. Just <strong style="color:var(--gold)">Ctrl+V</strong> into Outlook signature settings.</li>
         <li>Click <strong style="color:var(--gold)">"Copy HTML"</strong> for raw HTML code.</li>
         <li>If the email address field is left blank, it auto-generates as <code>flastname@keyrisk.co.za</code>.</li>
       </ol>
