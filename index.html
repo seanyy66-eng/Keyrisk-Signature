@@ -210,14 +210,22 @@ function copyHTML() {
 
 function copySignature() {
   const html = generateSignatureHTML();
-  const blob = new Blob([html], { type: 'text/html' });
-  const plainBlob = new Blob([html], { type: 'text/plain' });
-  navigator.clipboard.write([
-    new ClipboardItem({
-      'text/html': blob,
-      'text/plain': plainBlob
-    })
-  ]).then(() => showToast('Signature copied — paste into your email client'));
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  tmp.style.position = 'fixed';
+  tmp.style.left = '-9999px';
+  tmp.style.top = '0';
+  tmp.style.opacity = '0';
+  document.body.appendChild(tmp);
+  const range = document.createRange();
+  range.selectNodeContents(tmp);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  document.execCommand('copy');
+  sel.removeAllRanges();
+  document.body.removeChild(tmp);
+  showToast('Signature copied — paste into your email client');
 }
 
 function applyPreset(name) {
