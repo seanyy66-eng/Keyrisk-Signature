@@ -58,7 +58,7 @@
   .btn-primary:hover{background:var(--gold-dim);transform:translateY(-1px)}
   .btn-secondary{background:var(--input-bg);color:var(--white);border:1px solid var(--input-border)}
   .btn-secondary:hover{background:var(--surface-hover);border-color:var(--gold)}
-  .preview-body{padding:28px;background:#f5f5f5;min-height:260px;display:flex;align-items:flex-start;justify-content:center}
+  .preview-body{padding:28px;background:#ffffff;min-height:260px;display:flex;align-items:flex-start;justify-content:center}
   .toast{position:fixed;bottom:30px;right:30px;background:var(--navy);border:1px solid var(--gold);color:var(--white);padding:14px 24px;border-radius:10px;font-size:14px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.4);z-index:1000;animation:slideIn .3s ease,slideOut .3s ease 2.2s forwards;display:flex;align-items:center;gap:8px}
   .toast .icon{color:var(--gold);font-size:18px}
   @keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
@@ -137,13 +137,13 @@ function generateSignatureHTML() {
 
   let phoneRows;
   if (state.phone2) {
-    phoneRows = `<tr><td width="20" valign="top" style="padding:0;vertical-align:top;"><font face="Trebuchet MS,Arial,sans-serif" size="2" color="#EFC52E">&#9742;</font></td><td valign="top" style="padding:0 0 4px 0;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#ffffff">${p1}<br>${state.phone2}</font></td></tr>`;
+    phoneRows = `<tr><td width="20" valign="top" style="padding:0;"><font face="Trebuchet MS,Arial,sans-serif" size="2" color="#EFC52E">&#9742;</font></td><td valign="top" style="padding:0 0 4px 0;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#21243D">${p1}<br>${state.phone2}</font></td></tr>`;
   } else {
-    phoneRows = `<tr><td width="20" valign="middle" style="padding:0;vertical-align:middle;"><font face="Trebuchet MS,Arial,sans-serif" size="2" color="#EFC52E">&#9742;</font></td><td valign="middle" style="padding:0 0 4px 0;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#ffffff">${p1}</font></td></tr>`;
+    phoneRows = `<tr><td width="20" valign="middle" style="padding:0;"><font face="Trebuchet MS,Arial,sans-serif" size="2" color="#EFC52E">&#9742;</font></td><td valign="middle" style="padding:0 0 4px 0;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#21243D">${p1}</font></td></tr>`;
   }
 
   const mboxHTML = mboxes.map(m =>
-    `<tr><td style="padding:0 0 1px 0;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#EFC52E"><b>${m.label}:</b></font> <a href="mailto:${m.email}" style="text-decoration:none;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#ffffff">${m.email}</font></a></td></tr>`
+    `<tr><td style="padding:0 0 1px 0;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#EFC52E"><b>${m.label}:</b></font> <a href="mailto:${m.email}" style="text-decoration:none;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#21243D">${m.email}</font></a></td></tr>`
   ).join('\n');
 
   let discl = 'Disclaimer: Keyrisk Group Benefits (Pty) Ltd accepts no liability for unauthorised use of its email facility or the contents of this communication.';
@@ -151,41 +151,32 @@ function generateSignatureHTML() {
     discl += `<br>As ${state.faisRole}, I may provide factual product information only and am not authorised to give advice in terms of FAIS.`;
 
   return `<table cellpadding="0" cellspacing="0" border="0" width="580" style="border-collapse:collapse;">
-  <tr><td bgcolor="#21243D" style="padding:0;">
-    <table cellpadding="0" cellspacing="0" border="0" width="580" style="border-collapse:collapse;">
-      <tr>
-        <td width="160" valign="top" style="padding:16px 0 14px 18px;">
-          <img src="${HOSTED_LOGO}" width="140" height="46" alt="Keyrisk" style="display:block;" border="0">
-          <table cellpadding="0" cellspacing="0" border="0"><tr><td height="70" style="font-size:1px;line-height:1px;">&nbsp;</td></tr></table>
-          <font face="Trebuchet MS,Arial,sans-serif" size="1" color="#8a8faa">FSP No. 50139</font>
-        </td>
-        <td width="1" valign="top" style="padding:14px 8px;">
-          <table cellpadding="0" cellspacing="0" border="0" width="1"><tr><td width="1" height="120" bgcolor="#3a3f5e" style="font-size:1px;line-height:1px;">&nbsp;</td></tr></table>
-        </td>
-        <td valign="top" style="padding:16px 6px;">
-          <font face="Trebuchet MS,Arial,sans-serif" size="4" color="#EFC52E"><b>${fn.toUpperCase()}</b></font><br>
-          <font face="Trebuchet MS,Arial,sans-serif" size="4" color="#8a8faa">${ln.toUpperCase()}</font><br>
-          <font face="Trebuchet MS,Arial,sans-serif" size="1" color="#ffffff">${title}${state.region ? '<br>' + state.region : ''}</font>
-          ${mboxes.length ? `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin-top:10px;">
-            <tr><td style="padding:0 0 3px 0;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#ffffff"><b>${secTitle}</b></font></td></tr>
-            ${mboxHTML}
-          </table>` : ''}
-        </td>
-        <td width="195" valign="top" style="padding:16px 18px 16px 6px;">
-          <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
-            ${phoneRows}
-            <tr><td width="20" valign="middle" style="padding:0;vertical-align:middle;"><font face="Trebuchet MS,Arial,sans-serif" size="2" color="#EFC52E">&#9993;</font></td><td valign="middle" style="padding:0 0 4px 0;"><a href="mailto:${em}" style="text-decoration:none;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#ffffff">${em}</font></a></td></tr>
-            <tr><td width="20" valign="middle" style="padding:0;vertical-align:middle;"><font face="Trebuchet MS,Arial,sans-serif" size="2" color="#EFC52E">&#8853;</font></td><td valign="middle" style="padding:0 0 12px 0;"><a href="https://www.keyrisk.co.za" style="text-decoration:none;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#ffffff">www.keyrisk.co.za</font></a></td></tr>
-            <tr><td colspan="2" style="padding:0;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#ffffff">Block A, Homestead Office Park,<br>65 Homestead Avenue, Bryanston<br>Private Bag X135, Bryanston, 2021<br><b>Tel:</b> +27 86 100 0079</font></td></tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-    ${state.includeNote ? `<table cellpadding="0" cellspacing="0" border="0" width="580" style="border-collapse:collapse;">
-      <tr><td style="padding:0 18px 12px 176px;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#8a8faa"><i>Please include fund name, member name, and date of birth or ID number in all correspondence.</i></font></td></tr>
-    </table>` : ''}
-  </td></tr>
-  <tr><td style="padding:6px 18px;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#666666">${discl}</font></td></tr>
+  <tr>
+    <td width="160" valign="top" style="padding:16px 0 14px 0;border-right:2px solid #EFC52E;">
+      <img src="${HOSTED_LOGO}" width="140" height="46" alt="Keyrisk" style="display:block;" border="0">
+      <table cellpadding="0" cellspacing="0" border="0"><tr><td height="70" style="font-size:1px;line-height:1px;">&nbsp;</td></tr></table>
+      <font face="Trebuchet MS,Arial,sans-serif" size="1" color="#8a8faa">FSP No. 50139</font>
+    </td>
+    <td valign="top" style="padding:16px 6px 16px 14px;">
+      <font face="Trebuchet MS,Arial,sans-serif" size="4" color="#21243D"><b>${fn.toUpperCase()}</b></font><br>
+      <font face="Trebuchet MS,Arial,sans-serif" size="4" color="#EFC52E">${ln.toUpperCase()}</font><br>
+      <font face="Trebuchet MS,Arial,sans-serif" size="1" color="#666666">${title}${state.region ? '<br>' + state.region : ''}</font>
+      ${mboxes.length ? `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin-top:10px;">
+        <tr><td style="padding:0 0 3px 0;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#21243D"><b>${secTitle}</b></font></td></tr>
+        ${mboxHTML}
+      </table>` : ''}
+    </td>
+    <td width="195" valign="top" style="padding:16px 0 16px 6px;">
+      <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+        ${phoneRows}
+        <tr><td width="20" valign="middle" style="padding:0;"><font face="Trebuchet MS,Arial,sans-serif" size="2" color="#EFC52E">&#9993;</font></td><td valign="middle" style="padding:0 0 4px 0;"><a href="mailto:${em}" style="text-decoration:none;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#21243D">${em}</font></a></td></tr>
+        <tr><td width="20" valign="middle" style="padding:0;"><font face="Trebuchet MS,Arial,sans-serif" size="2" color="#EFC52E">&#8853;</font></td><td valign="middle" style="padding:0 0 12px 0;"><a href="https://www.keyrisk.co.za" style="text-decoration:none;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#21243D">www.keyrisk.co.za</font></a></td></tr>
+        <tr><td colspan="2" style="padding:0;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#21243D">Block A, Homestead Office Park,<br>65 Homestead Avenue, Bryanston<br>Private Bag X135, Bryanston, 2021<br><b>Tel:</b> +27 86 100 0079</font></td></tr>
+      </table>
+    </td>
+  </tr>
+  ${state.includeNote ? `<tr><td colspan="3" style="padding:4px 0 0 0;border-top:1px solid #e0e0e0;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#8a8faa"><i>Please include fund name, member name, and date of birth or ID number in all correspondence.</i></font></td></tr>` : ''}
+  <tr><td colspan="3" style="padding:6px 0 0 0;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#999999">${discl}</font></td></tr>
 </table>`;
 }
 
