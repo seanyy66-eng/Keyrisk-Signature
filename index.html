@@ -209,110 +209,45 @@ function copyHTML() {
   navigator.clipboard.writeText(generateSignatureHTML()).then(() => showToast('HTML code copied to clipboard'));
 }
 
-function generateOutlookHTML() {
-  const fn = (state.firstName || 'FIRST').toUpperCase();
-  const ln = (state.lastName || 'LAST').toUpperCase();
-  const title = state.title || 'Job Title';
-  const p1 = state.phone1 || '+27 XX XXX XXXX';
-  const em = getEmailPrefix() || 'email@keyrisk.co.za';
-  const mboxes = getActiveMailboxes();
-  const secTitle = getSectionTitle();
-  const region = state.region ? '<br>' + state.region : '';
-
-  let phoneRow;
-  if (state.phone2) {
-    phoneRow = `<tr><td width="20" valign="top"><font face="Trebuchet MS,Arial,sans-serif" size="2" color="#EFC52E">&#9742;</font></td><td valign="top"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#ffffff">${p1}<br>${state.phone2}</font></td></tr>`;
-  } else {
-    phoneRow = `<tr><td width="20" valign="middle"><font face="Trebuchet MS,Arial,sans-serif" size="2" color="#EFC52E">&#9742;</font></td><td valign="middle"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#ffffff">${p1}</font></td></tr>`;
-  }
-
-  const mboxRows = mboxes.map(m =>
-    `<tr><td><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#EFC52E"><b>${m.label}:</b></font> <a href="mailto:${m.email}"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#ffffff">${m.email}</font></a></td></tr>`
-  ).join('');
-
-  let discl = 'Disclaimer: Keyrisk Group Benefits (Pty) Ltd accepts no liability for unauthorised use of its email facility or the contents of this communication.';
-  if (state.includeFAIS && state.faisRole)
-    discl += '<br>As ' + state.faisRole + ', I may provide factual product information only and am not authorised to give advice in terms of FAIS.';
-
-  return `<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
-<head><meta charset="utf-8">
-<!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml><![endif]-->
-<style>
-body { margin:0; padding:0; }
-table { border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; }
-a { color:#ffffff; }
-</style>
-</head>
-<body>
-<table cellpadding="0" cellspacing="0" border="0" width="580">
-<tr><td bgcolor="#21243D" valign="top">
-<!--[if gte mso 9]>
-<v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:580px;">
-<v:fill type="tile" color="#21243D"/>
-<v:textbox style="mso-fit-shape-to-text:true" inset="0,0,0,0">
-<![endif]-->
-<table cellpadding="0" cellspacing="0" border="0" width="580">
-<tr>
-<td width="160" valign="top" style="padding:18px 0 14px 20px;">
-<img src="${HOSTED_LOGO}" width="140" height="46" alt="Keyrisk" border="0" style="display:block;">
-<table cellpadding="0" cellspacing="0" border="0"><tr><td height="70"><font size="1">&nbsp;</font></td></tr></table>
-<font face="Trebuchet MS,Arial,sans-serif" size="1" color="#8a8faa">FSP No. 50139</font>
-</td>
-<td width="1" valign="top" style="padding:16px 10px;">
-<table cellpadding="0" cellspacing="0" border="0" width="1"><tr><td width="1" height="130" bgcolor="#3a3f5e"><font size="1">&nbsp;</font></td></tr></table>
-</td>
-<td valign="top" style="padding:18px 6px;">
-<font face="Trebuchet MS,Arial,sans-serif" size="4" color="#EFC52E"><b>${fn}</b></font><br>
-<font face="Trebuchet MS,Arial,sans-serif" size="4" color="#8a8faa">${ln}</font><br>
-<font face="Trebuchet MS,Arial,sans-serif" size="1" color="#ffffff">${title}${region}</font>
-${mboxes.length ? `<br><br><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#ffffff"><b>${secTitle}</b></font><br>
-<table cellpadding="0" cellspacing="0" border="0">${mboxRows}</table>` : ''}
-</td>
-<td width="200" valign="top" style="padding:18px 20px 18px 6px;">
-<table cellpadding="0" cellspacing="0" border="0">
-${phoneRow}
-<tr><td width="20" valign="middle"><font face="Trebuchet MS,Arial,sans-serif" size="2" color="#EFC52E">&#9993;</font></td><td valign="middle"><a href="mailto:${em}"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#ffffff">${em}</font></a></td></tr>
-<tr><td width="20" valign="middle"><font face="Trebuchet MS,Arial,sans-serif" size="2" color="#EFC52E">&#8853;</font></td><td valign="middle"><a href="https://www.keyrisk.co.za"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#ffffff">www.keyrisk.co.za</font></a></td></tr>
-<tr><td height="10" colspan="2"><font size="1">&nbsp;</font></td></tr>
-<tr><td colspan="2"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#ffffff">Block A, Homestead Office Park,<br>65 Homestead Avenue, Bryanston<br>Private Bag X135, Bryanston, 2021<br><b>Tel:</b> +27 86 100 0079</font></td></tr>
-</table>
-</td>
-</tr>
-</table>
-${state.includeNote ? `<table cellpadding="0" cellspacing="0" border="0" width="580"><tr><td style="padding:0 20px 12px 190px;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#8a8faa"><i>Please include fund name, member name, and date of birth or ID number in all correspondence.</i></font></td></tr></table>` : ''}
-<!--[if gte mso 9]>
-</v:textbox>
-</v:rect>
-<![endif]-->
-</td></tr>
-<tr><td style="padding:6px 0;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#666666">${discl}</font></td></tr>
-</table>
-</body></html>`;
-}
 
 function copySignature() {
-  const html = generateOutlookHTML();
-  const blob = new Blob([html], { type: 'text/html' });
-  const plainBlob = new Blob([' '], { type: 'text/plain' });
-  navigator.clipboard.write([
-    new ClipboardItem({
-      'text/html': blob,
-      'text/plain': plainBlob
-    })
-  ]).then(() => showToast('Signature copied — Ctrl+V into Outlook'));
-}
+  const el = document.getElementById('sig-preview');
+  html2canvas(el, { backgroundColor: null, scale: 2, useCORS: true }).then(canvas => {
+    const dataURL = canvas.toDataURL('image/png');
+    const em = getEmailPrefix() || 'email@keyrisk.co.za';
+    const p1 = state.phone1 || '+27 XX XXX XXXX';
+    const mboxes = getActiveMailboxes();
+    const secTitle = getSectionTitle();
 
-function downloadForOutlook() {
-  const html = generateOutlookHTML();
-  const blob = new Blob([html], { type: 'text/html' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  const name = (state.firstName && state.lastName) ? state.firstName + '_' + state.lastName : 'keyrisk';
-  a.href = url;
-  a.download = name + '.htm';
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('Downloaded — place in %APPDATA%\\\\Microsoft\\\\Signatures\\\\ and restart Outlook');
+    let discl = 'Disclaimer: Keyrisk Group Benefits (Pty) Ltd accepts no liability for unauthorised use of its email facility or the contents of this communication.';
+    if (state.includeFAIS && state.faisRole)
+      discl += ' As ' + state.faisRole + ', I may provide factual product information only and am not authorised to give advice in terms of FAIS.';
+
+    const mboxLinks = mboxes.map(m =>
+      '<font face="Trebuchet MS,Arial,sans-serif" size="1" color="#EFC52E"><b>' + m.label + ':</b></font> <a href="mailto:' + m.email + '"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#21243D">' + m.email + '</font></a>'
+    ).join(' &nbsp;|&nbsp; ');
+
+    const html = `<table cellpadding="0" cellspacing="0" border="0" width="580"><tr><td>
+<img src="${dataURL}" width="580" style="display:block;width:580px;" border="0">
+</td></tr>
+<tr><td style="padding:8px 0 4px 0;">
+<font face="Trebuchet MS,Arial,sans-serif" size="1" color="#21243D">
+<a href="tel:${p1.replace(/\s/g,'')}"><font color="#21243D">${p1}</font></a>${state.phone2 ? ' | <a href="tel:' + state.phone2.replace(/\\s/g,'') + '"><font color="#21243D">' + state.phone2 + '</font></a>' : ''} | <a href="mailto:${em}"><font color="#21243D">${em}</font></a> | <a href="https://www.keyrisk.co.za"><font color="#21243D">www.keyrisk.co.za</font></a>
+</font>
+</td></tr>
+${mboxes.length ? `<tr><td style="padding:2px 0;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#21243D"><b>${secTitle}:</b></font> ${mboxLinks}</td></tr>` : ''}
+<tr><td style="padding:4px 0 0 0;"><font face="Trebuchet MS,Arial,sans-serif" size="1" color="#999999">${discl}</font></td></tr>
+</table>`;
+
+    const blob = new Blob([html], { type: 'text/html' });
+    const plainBlob = new Blob([' '], { type: 'text/plain' });
+    navigator.clipboard.write([
+      new ClipboardItem({
+        'text/html': blob,
+        'text/plain': plainBlob
+      })
+    ]).then(() => showToast('Signature copied — Ctrl+V into Outlook'));
+  });
 }
 
 function applyPreset(name) {
@@ -391,7 +326,6 @@ function render() {
           <div class="btn-group">
             <button class="btn btn-secondary" onclick="copyHTML()">&#60;/&#62; Copy HTML</button>
             <button class="btn btn-primary" onclick="copySignature()">&#128203; Copy Signature</button>
-            <button class="btn btn-secondary" onclick="downloadForOutlook()">&#128229; Download .htm</button>
           </div>
         </div>
         <div class="preview-body"><div id="sig-preview">${generateSignatureHTML()}</div></div>
@@ -403,8 +337,7 @@ function render() {
         <li>Fill in the employee details — the preview updates live.</li>
         <li>Use a <strong style="color:var(--gold)">Quick Preset</strong> to auto-select a common link set, or manually tick individual links below.</li>
         <li>Choose the section heading: <code>Dedicated Mailboxes</code> or <code>Service Links</code>.</li>
-        <li>Click <strong style="color:var(--gold)">"Copy Signature"</strong> then <strong style="color:var(--gold)">Ctrl+V</strong> into Outlook signature settings.</li>
-        <li><strong style="color:var(--gold)">Backup method:</strong> Click <strong style="color:var(--gold)">"Download .htm"</strong>, save the file to <code>%APPDATA%\Microsoft\Signatures\</code> and restart Outlook.</li>
+        <li>Click <strong style="color:var(--gold)">"Copy Signature"</strong> then <strong style="color:var(--gold)">Ctrl+V</strong> into Outlook signature settings. The dark header is copied as an image with clickable links below.</li>
         <li>Click <strong style="color:var(--gold)">"Copy HTML"</strong> for raw HTML code.</li>
         <li>If the email address field is left blank, it auto-generates as <code>flastname@keyrisk.co.za</code>.</li>
       </ol>
