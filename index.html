@@ -202,39 +202,14 @@ function copyHTML() {
 }
 
 function copySignature() {
-  const html = generateSignatureHTML();
-  const tmp = document.createElement('div');
-  tmp.innerHTML = html;
-  tmp.style.position = 'fixed';
-  tmp.style.left = '-9999px';
-  tmp.style.top = '0';
-  tmp.style.opacity = '0';
-  document.body.appendChild(tmp);
-  const range = document.createRange();
-  range.selectNodeContents(tmp);
-  const sel = window.getSelection();
-  sel.removeAllRanges();
-  sel.addRange(range);
-  document.execCommand('copy');
-  sel.removeAllRanges();
-  document.body.removeChild(tmp);
-  showToast('Signature copied — paste into your email client');
-}
-
-function downloadForOutlook() {
-  const html = `<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40">
-<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml><![endif]-->
-</head><body>${generateSignatureHTML()}</body></html>`;
-  const blob = new Blob([html], { type: 'text/html' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  const name = (state.firstName && state.lastName) ? state.firstName + '_' + state.lastName : 'keyrisk';
-  a.href = url;
-  a.download = name + '_signature.htm';
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('Downloaded! Copy to %APPDATA%\\\\Microsoft\\\\Signatures\\\\');
+  const sigHTML = generateSignatureHTML();
+  const win = window.open('', '_blank');
+  win.document.write(`<html><head><meta charset="utf-8"><title>Keyrisk Signature</title></head><body style="margin:20px;background:#ffffff;">
+    <p style="font-family:Arial,sans-serif;font-size:14px;color:#333;margin-bottom:16px;"><b>Press Ctrl+A then Ctrl+C to copy, then paste into Outlook signature settings.</b></p>
+    <hr style="margin-bottom:20px;border:1px solid #ddd;">
+    ${sigHTML}
+  </body></html>`);
+  win.document.close();
 }
 
 function applyPreset(name) {
@@ -312,8 +287,7 @@ function render() {
           <h2>Live Preview</h2>
           <div class="btn-group">
             <button class="btn btn-secondary" onclick="copyHTML()">&#60;/&#62; Copy HTML</button>
-            <button class="btn btn-primary" onclick="copySignature()">&#128203; Copy Signature</button>
-            <button class="btn btn-secondary" onclick="downloadForOutlook()">&#128229; Download for Outlook</button>
+            <button class="btn btn-primary" onclick="copySignature()">&#128203; Copy for Outlook</button>
           </div>
         </div>
         <div class="preview-body"><div id="sig-preview">${generateSignatureHTML()}</div></div>
@@ -325,8 +299,7 @@ function render() {
         <li>Fill in the employee details — the preview updates live.</li>
         <li>Use a <strong style="color:var(--gold)">Quick Preset</strong> to auto-select a common link set, or manually tick individual links below.</li>
         <li>Choose the section heading: <code>Dedicated Mailboxes</code> or <code>Service Links</code>.</li>
-        <li>Click <strong style="color:var(--gold)">"Copy Signature"</strong> to copy the formatted signature — paste directly into Gmail or webmail signature settings.</li>
-        <li><strong style="color:var(--gold)">For Outlook:</strong> Click <strong style="color:var(--gold)">"Download for Outlook"</strong> — save the file, then copy it to <code>%APPDATA%\\Microsoft\\Signatures\\</code> (type that path into File Explorer). Restart Outlook and select the signature in settings.</li>
+        <li>Click <strong style="color:var(--gold)">"Copy for Outlook"</strong> — a new tab opens with the signature. Press <strong style="color:var(--gold)">Ctrl+A</strong> then <strong style="color:var(--gold)">Ctrl+C</strong> to copy, then paste into Outlook signature settings.</li>
         <li>Click <strong style="color:var(--gold)">"Copy HTML"</strong> for raw HTML code.</li>
         <li>If the email address field is left blank, it auto-generates as <code>flastname@keyrisk.co.za</code>.</li>
       </ol>
